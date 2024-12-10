@@ -28,6 +28,8 @@ WEIGHTS: dict[str, float] = {
 def calc_abc_af_bleeding_score(parameters: Parameters) -> float:
     if not any([parameters['DOAC'], parameters['Aspirin']]):
         raise ValueError("Either 'DOAC' or 'Aspirin' must be true!")
+    if parameters['DOAC'] and parameters['Aspirin']:
+        raise ValueError("'DOAC' and 'Aspirin' cannot both be true!")
     new_parameters = dict({key: value for key, value in parameters.items()})
     new_parameters['log(Troponin T in ng/L)'] = math.log(parameters['Troponin T in ng/L'])
     new_parameters['log(GDF-15 in ng/L)'] = math.log(parameters['GDF-15 in ng/L'])
