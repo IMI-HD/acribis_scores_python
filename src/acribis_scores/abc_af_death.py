@@ -1,15 +1,17 @@
 import math
-from typing import TypedDict
+from typing import TypedDict, Annotated
+
+from src.acribis_scores.value_range import ValueRange
 
 # See: https://doi.org/10.1093/eurheartj/ehx584
 # Also: https://academic.oup.com/eurheartj/article/39/6/477/4554831#supplementary-data
 
 Parameters = TypedDict('Parameters', {
     'Heart Failure': bool,
-    'Age': int,
-    'NT-proBNP in ng/L': float,
-    'GDF-15 in ng/L': float,
-    'Troponin T in ng/L': float
+    'Age': Annotated[int, ValueRange(22, 95)],
+    'NT-proBNP in ng/L': Annotated[float, ValueRange(5, 21000)],
+    'GDF-15 in ng/L': Annotated[float, ValueRange(400.0, 20000.0)],
+    'Troponin T in ng/L': Annotated[float, ValueRange(3.0, 200.0)]
 })
 
 # Model A: All-cause mortality model

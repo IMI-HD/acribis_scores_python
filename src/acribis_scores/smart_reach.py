@@ -1,7 +1,9 @@
 import math
 import sys
 from enum import Enum
-from typing import TypedDict
+from typing import TypedDict, Annotated
+
+from src.acribis_scores.value_range import ValueRange
 
 
 # See: https://doi.org/10.1161/JAHA.118.009217
@@ -14,13 +16,13 @@ class Model(Enum):
 
 
 Parameters = TypedDict('Parameters', {
-    'Age in years': int,
+    'Age in years': Annotated[int, ValueRange(45, 80)],
     'Male': bool,
     'Current smoker': bool,
     'Diabetes mellitus': bool,
-    'Systolic blood pressure in mmHg': int,
-    'Total cholesterol in mmol/L': float,
-    'Creatinine in µmol/L': float,
+    'Systolic blood pressure in mmHg': Annotated[int, ValueRange(100, 200)],
+    'Total cholesterol in mmol/L': Annotated[float, ValueRange(3, 10)],
+    'Creatinine in µmol/L': Annotated[float, ValueRange(30, 500)],
     'History of coronary artery disease': bool,
     'History of cerebrovascular disease': bool,
     'Peripheral artery disease': bool,
