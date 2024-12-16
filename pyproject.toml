@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "acribis_scores"
-version = "0.1.3"
+version = "0.1.4"
 authors = [
     { name = "Philipp Goos", email="philipp.goos@med.uni-heidelberg.de"},
     { name = "Sanketa Hegde", email="sanketa.hegde@uni-heidelberg.de"},
