@@ -1,4 +1,6 @@
 import unittest
+import platform
+import os
 
 from selenium import webdriver
 from selenium.webdriver import Keys
@@ -7,8 +9,11 @@ from selenium.webdriver.common.by import By
 from parameter_generator import generate_charge_af_parameters
 from acribis_scores.charge_af import calc_charge_af_score, Parameters
 
+if platform.system() == 'Windows':
+    import openpyxl
+    import win32com.client as win32
 
-@unittest.skip("Not yet fully implemented")
+
 class TestCHARGEAFCalculator(unittest.TestCase):
     def setUp(self):
         self.driver = webdriver.Firefox()
@@ -24,6 +29,12 @@ class TestCHARGEAFCalculator(unittest.TestCase):
 
             r_score = self.__get_r_score(parameters)
             python_score = calc_charge_af_score(parameters)
+            if platform.system() == 'Windows':
+                excel_score, equal = self.__get_excel_score(parameters)
+                if equal:
+                    self.assertAlmostEqual(python_score, excel_score, msg='CHARGE-AF', delta=0.1)
+                else:
+                    self.assertGreaterEqual(round(python_score, 2), round(excel_score, 2))
             self.assertEqual(round(python_score, 2), r_score, 'CHARGE-AF')
 
     def __get_r_score(self, parameters: Parameters) -> float:
@@ -65,6 +76,38 @@ class TestCHARGEAFCalculator(unittest.TestCase):
         self.driver.find_element(By.ID, "calculate_charge_af").click()
         text = self.driver.find_element(By.ID, "score_output_charge_af").text
         return float(text.split(': ')[1])
+
+    @staticmethod
+    def __get_excel_score(parameters: Parameters) -> tuple[float, bool]:
+        wb = openpyxl.load_workbook('resources/CHARGE_AF_Calculator.xlsx')
+        ws = wb['Sheet1']
+
+        ws['C6'] = parameters['Age']
+        ws['C7'] = 'yes' if parameters['Race (white)'] else 'no'
+        ws['C8'] = parameters['Height']
+        ws['C9'] = parameters['Weight']
+        ws['C10'] = 'yes' if parameters['Smoking (current)'] else 'no'
+        ws['C11'] = parameters['Systolic Blood Pressure']
+        ws['C12'] = parameters['Diastolic Blood Pressure']
+        ws['C13'] = 'yes' if parameters['Antihypertensive Medication Use (Yes)'] else 'no'
+        ws['C14'] = 'yes' if parameters['Diabetes (Yes)'] else 'no'
+        ws['C15'] = 'yes' if parameters['Heart failure (Yes)'] else 'no'
+        ws['C16'] = 'yes' if parameters['Myocardial infarction (Yes)'] else 'no'
+
+        wb.save("resources/CHARGE_AF_Calculator_TMP.xlsx")
+        wb.close()
+
+        excel = win32.gencache.EnsureDispatch('Excel.Application')
+        workbook = excel.Workbooks.Open(os.path.abspath('resources/CHARGE_AF_Calculator_TMP.xlsx'))
+        workbook.Save()
+        workbook.Close()
+        excel.Quit()
+
+        score = openpyxl.load_workbook('resources/CHARGE_AF_Calculator_TMP.xlsx', data_only=True)['Sheet1']['B20'].value
+        if type(score) is str:
+            score = score.strip('>%')
+            return float(score), False
+        return score * 100, True
 
 
 if __name__ == '__main__':

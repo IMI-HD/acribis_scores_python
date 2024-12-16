@@ -17,3 +17,6 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+
+# Excel Calculator
+/tests/resources/CHARGE_AF_Calculator_TMP.xlsx
