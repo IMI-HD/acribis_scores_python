@@ -87,8 +87,10 @@ class Calculator(Frame):
             if (type(value) is BooleanVar) or value.get():
                 score_parameters[name] = self.__fields[name](value.get())
             else:
-                showerror(title='Missing Values!', message=f"{name} is required but not provided as input!")
-                return
+                hint = typing.get_type_hints(SCORES[self.__selected_score.get()][0], include_extras=True)[name]
+                if typing.get_origin(hint) is not typing.NotRequired:
+                    showerror(title='Missing Values!', message=f"{name} is required but not provided as input!")
+                    return
         try:
             score = SCORES[self.__selected_score.get()][1](score_parameters)
         except ValueError as e:
