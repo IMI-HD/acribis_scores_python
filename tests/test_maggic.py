@@ -21,7 +21,6 @@ class TestMAGGIC(unittest.TestCase):
     def test_maggic(self):
         for i in range(10):
             parameters = generate_maggic_parameters()
-            print(f"Run {i}:\n{parameters}")
             online_score = self.__get_online_score(parameters)
             r_score = self.__get_r_score(parameters)
             python_score = calc_maggic_score(parameters)

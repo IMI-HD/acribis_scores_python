@@ -18,7 +18,6 @@ class TestCHADSVAScCalculator(unittest.TestCase):
     def test_chads_vasc(self):
         for i in range(10):
             parameters = generate_chads_vasc_parameters()
-            print(f"Run {i}:\n{parameters}")
             online_score = self.__get_online_score(parameters)
             r_score = self.__get_r_score(parameters)
             python_score = calc_chads_vasc_score(parameters)

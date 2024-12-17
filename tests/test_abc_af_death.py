@@ -19,7 +19,6 @@ class TestABCAFStroke(unittest.TestCase):
     def test_abc_af_stroke(self):
         for i in range(10):
             parameters = generate_abc_af_death_parameters()
-            print(f"Run {i + 1}:\n{parameters}")
 
             r_score_model_a, r_score_model_b = self.__get_r_score(parameters)
             python_score_model_a, python_score_model_b = calc_abc_af_death_score(parameters)

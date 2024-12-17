@@ -21,7 +21,6 @@ class TestSMARTCalculator(unittest.TestCase):
         for i in range(10):
             creatinine = random.uniform(0.57, 2.26)
             parameters = generate_smart_parameters(creatinine)
-            print(f"Run {i}:\n{parameters}")
 
             r_score = self.__get_r_score(parameters)
             python_score = calc_smart_score(parameters)

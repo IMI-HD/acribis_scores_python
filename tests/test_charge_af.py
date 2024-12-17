@@ -25,7 +25,6 @@ class TestCHARGEAFCalculator(unittest.TestCase):
     def test_charge_af(self):
         for i in range(10):
             parameters = generate_charge_af_parameters()
-            print(f"Run {i + 1}:\n{parameters}")
 
             r_score = self.__get_r_score(parameters)
             python_score = calc_charge_af_score(parameters)

@@ -18,7 +18,6 @@ class TestHASBLEDCalculator(unittest.TestCase):
     def test_has_bled(self):
         for i in range(10):
             parameters = generate_has_bled_parameters()
-            print(f"Run {i + 1}:\n{parameters}")
 
             online_score = self.__get_online_score(parameters)
             r_score = self.__get_r_score(parameters)

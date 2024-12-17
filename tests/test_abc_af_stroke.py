@@ -19,7 +19,6 @@ class TestABCAFStroke(unittest.TestCase):
     def test_abc_af_stroke(self):
         for i in range(10):
             parameters = generate_abc_af_stroke_parameters()
-            print(f"Run {i + 1}:\n{parameters}")
 
             r_score = self.__get_r_score(parameters)
             python_score = round(calc_abc_af_stroke_score(parameters), 2)
@@ -47,9 +46,9 @@ class TestABCAFStroke(unittest.TestCase):
         self.driver.find_element(By.NAME, 'age').send_keys(str(parameters['Age']))
         self.driver.find_element(By.NAME, 'cTnT').send_keys(str(parameters['Troponin T in ng/L']))
         self.driver.find_element(By.NAME, 'BNP').send_keys(str(parameters['NT-proBNP in ng/L']))
-        time.sleep(1)
+        time.sleep(0.5)
         self.driver.execute_script('arguments[0].scrollIntoView()', i_frame)
-        time.sleep(1)
+        time.sleep(0.5)
         self.driver.find_element(By.CSS_SELECTOR, 'tr:nth-child(5) input').click()
         text = self.driver.find_element(By.CSS_SELECTOR, "form").text
         search_string = 'Predicted one year stroke/SE risk '
