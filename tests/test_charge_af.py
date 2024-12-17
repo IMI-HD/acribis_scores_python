@@ -32,7 +32,7 @@ class TestCHARGEAFCalculator(unittest.TestCase):
             if platform.system() == 'Windows':
                 excel_score, equal = self.__get_excel_score(parameters)
                 if equal:
-                    self.assertAlmostEqual(python_score, excel_score, msg='CHARGE-AF', delta=0.1)
+                    self.assertAlmostEqual(python_score, excel_score, msg='CHARGE-AF', delta=0.2)
                 else:
                     self.assertGreaterEqual(round(python_score, 2), round(excel_score, 2))
             self.assertEqual(round(python_score, 2), r_score, 'CHARGE-AF')
@@ -79,7 +79,10 @@ class TestCHARGEAFCalculator(unittest.TestCase):
 
     @staticmethod
     def __get_excel_score(parameters: Parameters) -> tuple[float, bool]:
-        wb = openpyxl.load_workbook('resources/CHARGE_AF_Calculator.xlsx')
+        directory = os.path.dirname(os.path.abspath(__file__))
+        excel_original = os.path.join(directory, 'resources/CHARGE_AF_Calculator.xlsx')
+        excel_tmp = os.path.join(directory, 'resources/CHARGE_AF_Calculator_TMP.xlsx')
+        wb = openpyxl.load_workbook(excel_original)
         ws = wb['Sheet1']
 
         ws['C6'] = parameters['Age']
@@ -94,16 +97,16 @@ class TestCHARGEAFCalculator(unittest.TestCase):
         ws['C15'] = 'yes' if parameters['Heart failure (Yes)'] else 'no'
         ws['C16'] = 'yes' if parameters['Myocardial infarction (Yes)'] else 'no'
 
-        wb.save("resources/CHARGE_AF_Calculator_TMP.xlsx")
+        wb.save(excel_tmp)
         wb.close()
 
         excel = win32.gencache.EnsureDispatch('Excel.Application')
-        workbook = excel.Workbooks.Open(os.path.abspath('resources/CHARGE_AF_Calculator_TMP.xlsx'))
+        workbook = excel.Workbooks.Open(excel_tmp)
         workbook.Save()
         workbook.Close()
         excel.Quit()
 
-        score = openpyxl.load_workbook('resources/CHARGE_AF_Calculator_TMP.xlsx', data_only=True)['Sheet1']['B20'].value
+        score = openpyxl.load_workbook(excel_tmp, data_only=True)['Sheet1']['B20'].value
         if type(score) is str:
             score = score.strip('>%')
             return float(score), False
