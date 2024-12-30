@@ -20,3 +20,6 @@ venv.bak/
 
 # Excel Calculator
 /tests/resources/CHARGE_AF_Calculator_TMP.xlsx
+/tests/resources/calculator_death_v03.xlsm
+/tests/resources/calculator_hosp_competingrisk_v03.xlsm
+/tests/resources/calculator_hosp_death_v03.xlsm

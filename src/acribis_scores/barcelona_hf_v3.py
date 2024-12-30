@@ -3,9 +3,10 @@ import typing
 import pandas as pd
 from enum import Enum
 from importlib import resources as ir
-from typing import TypedDict, Any
+from typing import TypedDict, Any, Annotated
 
 import acribis_scores.resources as bcn_resources
+from acribis_scores.value_range import ValueRange, check_ranges
 
 
 class Model(Enum):
@@ -22,7 +23,7 @@ class Model(Enum):
 Parameters = TypedDict('Parameters', {
     'Age (years)': int,
     'Female': bool,
-    'NYHA Class': int,
+    'NYHA Class': Annotated[int, ValueRange(1, 4)],
     'Ejection fraction (%)': int,
     'Sodium (mmol/L)': int,
     'eGFR in mL/min/1.73m²': int,
@@ -150,7 +151,7 @@ def get_scores(file, model, new_parameters):
              parameter in new_parameters]
         )
     else:
-        new_parameters_copy = dict({key: value for key, value in new_parameters.items()})
+        new_parameters_copy = {key: value for key, value in new_parameters.items()}
         new_parameters_copy['Hospitalisation Prev. Year'] = bool(new_parameters_copy['Hospitalisation Prev. Year'])
         sum_product_all_parameters = sum(
             [new_parameters_copy[parameter] * coeff for parameter, coeff in coefficients.items() if
@@ -204,6 +205,7 @@ def _round_life_expectancy(model, parameters):
     return life_expectancy
 
 
+@check_ranges
 def calc_barcelona_hf_score(parameters: Parameters) -> dict[str, dict[str, list[float] | Any]]:
     all_scores = {}
     coefficients_death_file = (ir.files(bcn_resources) / 'barcelona_hf_v3_death_coefficients.csv')

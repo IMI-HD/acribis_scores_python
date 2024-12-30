@@ -1,5 +1,5 @@
 import random
-from typing import Any, get_type_hints, Mapping
+from typing import Any, get_type_hints, Mapping, get_origin, NotRequired
 
 from acribis_scores import *
 
@@ -11,6 +11,10 @@ def __get_random_parameters(parameter_dict: Mapping[str, Any]) -> dict[str, Any]
     for key, _ in parameter_dict.__annotations__.items():
         raw_parameter = types[key]
         annotation = annotations[key]
+
+        if get_origin(annotation) is NotRequired and bool(random.getrandbits(1)):
+            continue
+
         metadata = getattr(annotation, '__metadata__', None)
         minimum = 0
         maximum = 100000
