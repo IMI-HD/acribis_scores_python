@@ -46,11 +46,13 @@ Parameters = TypedDict('Parameters', {
 })
 
 #   The values in the min-max-median below is taken from the v3 disclaimer (terms of use).
+#   Edit: 02.01.2025: Replaced with values from the Excel sheets provided by the author
 MIN_MAX_MEDIAN = pd.DataFrame(
     {
-        'lower_limit': [35, 11, 130, 6.4, 8.8, 21.5017, 3, 18.089, 0.5, 0],
-        'upper_limit': [88, 71, 147, 109.7, 17.1, 34800.59, 265.45, 157.074, 246.948, 8],
-        'median_impute': [70.3, 34, 139, 51.2, 12.9, 1361.5, 22.6, 38.1, 27, 0]
+        'lower_limit': [31.31446954141, 13, 128, 7.63881506570324, 8.9, 37.45, 4.8245, 6.29, 0, 0],
+        'upper_limit': [90.9212046543464, 78.71, 145, 119.283356873844, 16.771, 34800, 242.84, 171.1, 257.040000000001,
+                        5.71000000000004],
+        'median_impute': [70.3, 35, 138, 60.613452863849, 12.9, 1361.5, 22.6, 38.1, 6, 0]
     },
     index=['Age (years)', 'Ejection fraction (%)', 'Sodium (mmol/L)', 'eGFR in mL/min/1.73m²',
            'Hemoglobin (g/dL)', 'NT-proBNP in pg/mL', 'hs-cTnT in ng/L', 'ST2 (ng/mL)',
