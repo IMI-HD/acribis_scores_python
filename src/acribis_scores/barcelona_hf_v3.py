@@ -32,7 +32,7 @@ Parameters = TypedDict('Parameters', {
     'Statin': bool,
     'ACEi/ARB': bool,
     'Betablockers': bool,
-    'HF Duration in months': int,
+    'HF Duration in months': Annotated[int, ValueRange(1, 1000)],
     'Diabetes Mellitus': bool,
     'Hospitalisation Prev. Year': int,
     'MRA': bool,

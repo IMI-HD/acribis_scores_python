@@ -1,16 +1,15 @@
 import random
-from typing import Any, get_type_hints, Mapping, get_origin, NotRequired
+from typing import Any, get_type_hints, Mapping, get_origin, NotRequired, Annotated
 
 from acribis_scores import *
+from acribis_scores.value_range import ValueRange
 
 
 def __get_random_parameters(parameter_dict: Mapping[str, Any]) -> dict[str, Any]:
     types = get_type_hints(parameter_dict)
-    annotations = get_type_hints(parameter_dict, include_extras=True)
     random_parameters = {}
-    for key, _ in parameter_dict.__annotations__.items():
+    for key, annotation in get_type_hints(parameter_dict, include_extras=True).items():
         raw_parameter = types[key]
-        annotation = annotations[key]
 
         if get_origin(annotation) is NotRequired and bool(random.getrandbits(1)):
             continue
@@ -99,6 +98,31 @@ def generate_maggic_parameters() -> maggic.Parameters:
 
 
 def generate_barcelona_hf_v3_parameters() -> barcelona_hf_v3.Parameters:
+    # noinspection PyTypedDict
+    barcelona_hf_v3.Parameters.__annotations__ = {
+        'Age (years)': Annotated[int, ValueRange(32, 90)],
+        'Female': bool,
+        'NYHA Class': Annotated[int, ValueRange(1, 4)],
+        'Ejection fraction (%)': Annotated[int, ValueRange(13, 78)],
+        'Sodium (mmol/L)': Annotated[int, ValueRange(128, 145)],
+        'eGFR in mL/min/1.73m²': Annotated[int, ValueRange(8, 119)],
+        'Hemoglobin (g/dL)': Annotated[float, ValueRange(9, 16)],
+        'Loop Diuretic Furosemide Dose': Annotated[int, ValueRange(0, 100)],
+        'Statin': bool,
+        'ACEi/ARB': bool,
+        'Betablockers': bool,
+        'HF Duration in months': Annotated[int, ValueRange(1, 257)],
+        'Diabetes Mellitus': bool,
+        'Hospitalisation Prev. Year': Annotated[int, ValueRange(0, 5)],
+        'MRA': bool,
+        'ICD': bool,
+        'CRT': bool,
+        'ARNI': bool,
+        'NT-proBNP in pg/mL': NotRequired[Annotated[int, ValueRange(38, 34800)]],
+        'hs-cTnT in ng/L': NotRequired[Annotated[float, ValueRange(4.8245, 242.84)]],
+        'ST2 (ng/mL)': NotRequired[Annotated[float, ValueRange(6.29, 171.1)]],
+        'SGLT2i': bool
+    }
     parameters = __get_random_parameters(barcelona_hf_v3.Parameters)
     if parameters['ACEi/ARB']:
         parameters['ARNI'] = False
