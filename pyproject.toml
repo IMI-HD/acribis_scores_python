@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "acribis_scores"
-version = "0.1.5"
+version = "0.1.6"
 authors = [
     { name = "Philipp Goos", email="philipp.goos@med.uni-heidelberg.de"},
     { name = "Sanketa Hegde", email="sanketa.hegde@uni-heidelberg.de"},
@@ -22,8 +22,13 @@ classifiers = [
 ]
 keywords = ["cvd risk", "risk score", "cha2ds2-vasc", "has-bled", "charge-af", "abc-af", "bcn bio-hf", "smart", "smart-reach", "maggic"]
 requires-python = ">=3.11"
-dependencies = [
-    "pandas>=2.2.3"
+dependencies = ["pandas>=2.2.3"]
+
+[project.optional-dependencies]
+test = [
+    "selenium>=4.28.1",
+    "openpyxl>=3.1.5; platform_system == 'Windows'",
+    "pywin32>=308; platform_system == 'Windows'"
 ]
 
 [project.urls]

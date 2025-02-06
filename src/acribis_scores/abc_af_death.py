@@ -1,7 +1,7 @@
 import math
 from typing import TypedDict, Annotated
 
-from src.acribis_scores.value_range import ValueRange
+from acribis_scores.value_range import ValueRange, check_ranges
 
 # See: https://doi.org/10.1093/eurheartj/ehx584
 # Also: https://academic.oup.com/eurheartj/article/39/6/477/4554831#supplementary-data
@@ -85,6 +85,7 @@ def __calc_score__(parameters: dict[str, bool | float | int],
     return one_year_risk * 100
 
 
+@check_ranges
 def calc_abc_af_death_score(parameters: Parameters) -> tuple[float, float]:
     model_a_new_parameters = {'Heart Failure': parameters['Heart Failure'],
                               'NT-proBNP in ng/L': math.log(max(200.0, parameters['NT-proBNP in ng/L'])),

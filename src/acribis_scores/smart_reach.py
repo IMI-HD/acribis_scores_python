@@ -1,9 +1,8 @@
 import math
-import sys
 from enum import Enum
 from typing import TypedDict, Annotated
 
-from src.acribis_scores.value_range import ValueRange
+from acribis_scores.value_range import ValueRange, check_ranges
 
 
 # See: https://doi.org/10.1161/JAHA.118.009217
@@ -182,11 +181,8 @@ def calc_one_year_survival(parameters: dict[str, int | float | bool], model: Mod
     return math.pow(model_baseline_survivals[parameters['Age in years']], math.exp(x))
 
 
+@check_ranges
 def calc_smart_reach_score(parameters: Parameters) -> tuple[float, float, float] | None:
-    if 45 > parameters['Age in years'] > 80:
-        print('Score undefined for this age group!', file=sys.stderr)
-        return None
-
     n_cardiovascular_diseases = sum([value for parameter, value in parameters.items() if parameter in CV_DISEASES])
     new_parameters = dict({key: value for key, value in parameters.items() if key not in CV_DISEASES})
     new_parameters['Two locations of cardiovascular disease'] = n_cardiovascular_diseases == 2
