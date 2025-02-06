@@ -121,7 +121,10 @@ pip install acribis-scores
 # Clone repository
 git clone git@github.com:IMI-HD/acribis_scores_python.git
 cd acribis_scores_python
+```
 
+**Windows**
+```Shell
 # Build
 py -m build
 
@@ -132,22 +135,43 @@ py -m pip install dist/acribis_scores-<version>-py3-none-any.whl
 py src/demo/gui.py
 ```
 
+**Linux**
+```Shell
+# Build
+python3 -m build
+
+# Install
+python3 -m pip install dist/acribis_scores-<version>-py3-none-any.whl
+
+# Run simple gui
+python3 src/demo/gui.py
+```
+
 ### Testing
 For automated testing against the R implementation and online/Excel calculators (if available) of these scores,
 clone the R project and follow the instructions there (https://github.com/IMI-HD/acribis_scores_r).
-Run the R Shiny app locally on port 80:
+Run the R Shiny app locally on port 80 and keep it running while executing the tests:
 
 ```Shell
 # In the acribis_scores_r folder
 shiny::runApp("app/demo_gui.R", port=80)
 ```
 
-Install Selenium and run the tests:
+Install the package with additional optional dependencies and run the tests:
 
 ```Shell
-# Install Selenium
-pip install selenium
+# Install with optional test dependencies
+pip install acribis-scores[test]
+```
 
+**Windows**
+```Shell
 # In the acribis_scores_python folder
 py -m unittest discover tests
+```
+
+**Linux**
+```Shell
+# In the acribis_scores_python folder
+python3 -m unittest discover tests
 ```
