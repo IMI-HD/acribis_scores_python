@@ -1,6 +1,7 @@
 import math
 from typing import TypedDict, Annotated
 
+from acribis_scores.batch_processing import batch_process
 from acribis_scores.value_range import ValueRange, check_ranges
 
 # See: https://doi.org/10.1093/eurheartj/ehx584
@@ -85,6 +86,7 @@ def __calc_score__(parameters: dict[str, bool | float | int],
     return one_year_risk * 100
 
 
+@batch_process
 @check_ranges
 def calc_abc_af_death_score(parameters: Parameters) -> tuple[float, float]:
     model_a_new_parameters = {'Heart Failure': parameters['Heart Failure'],

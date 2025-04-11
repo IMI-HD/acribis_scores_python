@@ -6,6 +6,7 @@ from importlib import resources as ir
 from typing import TypedDict, Any, Annotated
 
 import acribis_scores.resources as bcn_resources
+from acribis_scores.batch_processing import batch_process
 from acribis_scores.value_range import ValueRange, check_ranges
 
 
@@ -207,6 +208,7 @@ def _round_life_expectancy(model, parameters):
     return life_expectancy
 
 
+@batch_process
 @check_ranges
 def calc_barcelona_hf_score(parameters: Parameters) -> dict[str, dict[str, list[float] | Any]]:
     all_scores = {}

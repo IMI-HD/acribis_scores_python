@@ -1,6 +1,7 @@
 import math
 from typing import TypedDict, Annotated
 
+from acribis_scores.batch_processing import batch_process
 from acribis_scores.value_range import ValueRange, check_ranges
 
 # See: https://doi.org/10.1136/heartjnl-2013-303640
@@ -50,6 +51,7 @@ WEIGHTS: dict[str, float] = {
 }
 
 
+@batch_process
 @check_ranges
 def calc_smart_score(parameters: Parameters) -> float:
     new_parameters = dict({key: value for key, value in parameters.items()})

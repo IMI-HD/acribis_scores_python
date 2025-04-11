@@ -1,5 +1,7 @@
 import math
 from typing import TypedDict, Annotated
+
+from acribis_scores.batch_processing import batch_process
 from acribis_scores.value_range import ValueRange, check_ranges
 
 # See: https://doi.org/10.1016/S0140-6736(16)00741-8
@@ -24,6 +26,7 @@ WEIGHTS: dict[str, float] = {
 }
 
 
+@batch_process
 @check_ranges
 def calc_abc_af_bleeding_score(parameters: Parameters) -> float:
     if not any([parameters['DOAC'], parameters['Aspirin']]):

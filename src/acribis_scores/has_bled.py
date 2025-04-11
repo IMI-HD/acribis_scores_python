@@ -1,5 +1,7 @@
 from typing import TypedDict
 
+from acribis_scores.batch_processing import batch_process
+
 # See: https://doi.org/10.1378/chest.10-0134
 
 
@@ -16,5 +18,6 @@ Parameters = TypedDict('Parameters', {
 })
 
 
+@batch_process
 def calc_has_bled_score(parameters: Parameters) -> int:
     return sum(parameters.values())

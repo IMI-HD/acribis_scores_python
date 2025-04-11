@@ -2,6 +2,7 @@ import math
 from enum import Enum
 from typing import TypedDict, Annotated
 
+from acribis_scores.batch_processing import batch_process
 from acribis_scores.value_range import ValueRange, check_ranges
 
 
@@ -181,6 +182,7 @@ def calc_one_year_survival(parameters: dict[str, int | float | bool], model: Mod
     return math.pow(model_baseline_survivals[parameters['Age in years']], math.exp(x))
 
 
+@batch_process
 @check_ranges
 def calc_smart_reach_score(parameters: Parameters) -> tuple[float, float, float] | None:
     n_cardiovascular_diseases = sum([value for parameter, value in parameters.items() if parameter in CV_DISEASES])

@@ -1,5 +1,6 @@
 from typing import TypedDict, Annotated
 
+from acribis_scores.batch_processing import batch_process
 from acribis_scores.value_range import ValueRange, check_ranges
 
 # See: https://doi.org/10.1093/eurheartj/ehs337
@@ -127,6 +128,7 @@ def get_nyha_class_score(nyha_class: int) -> int:
     return score_array[nyha_class - 1]
 
 
+@batch_process
 @check_ranges
 def calc_maggic_score(parameters: Parameters) -> int:
     return (get_ef_score(parameters['Ejection fraction (%)']) +

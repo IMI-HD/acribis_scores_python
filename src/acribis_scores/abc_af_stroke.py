@@ -1,6 +1,7 @@
 import math
 from typing import TypedDict, Annotated
 
+from acribis_scores.batch_processing import batch_process
 from acribis_scores.value_range import ValueRange, check_ranges
 
 # See: https://doi.org/10.1093/eurheartj/ehw054
@@ -24,6 +25,7 @@ WEIGHTS: dict[str, float] = {
 }
 
 
+@batch_process
 @check_ranges
 def calc_abc_af_stroke_score(parameters: Parameters) -> float:
     if not any([parameters['DOAC'], parameters['Aspirin']]):

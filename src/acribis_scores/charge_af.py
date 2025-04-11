@@ -1,6 +1,7 @@
 import math
 from typing import TypedDict, Annotated
 
+from acribis_scores.batch_processing import batch_process
 from acribis_scores.value_range import ValueRange, check_ranges
 
 # See https://doi.org/10.1161/JAHA.112.000102
@@ -48,6 +49,7 @@ SCALES: dict[str, int] = {
 }
 
 
+@batch_process
 @check_ranges
 def calc_charge_af_score(parameters: Parameters) -> float:
     x = sum([(value / SCALES[parameter]) * WEIGHTS[parameter] for parameter, value in parameters.items()])

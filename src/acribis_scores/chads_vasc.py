@@ -1,4 +1,5 @@
 from typing import TypedDict
+from acribis_scores.batch_processing import batch_process
 
 # See: https://doi.org/10.1378/chest.09-1584
 
@@ -25,6 +26,7 @@ POINTS: dict[str, float] = {
 }
 
 
+@batch_process
 def calc_chads_vasc_score(parameters: Parameters) -> int:
     if parameters['Age ≥75y'] and parameters['Age 65-74y']:
         raise ValueError('Not both age parameters can be true!')
